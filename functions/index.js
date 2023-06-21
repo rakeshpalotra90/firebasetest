@@ -14,7 +14,7 @@ const {
     Filter
 } = require('firebase-admin/firestore');
 
-initializeApp({
+admin.initializeApp({
     credential: cert(serviceAccount)
 });
 
