@@ -32,8 +32,8 @@ exports.sendToken = functions.https.onRequest((request, response) => {
 
     let res;
     
-        const cityRef = db.collection('Receiver').doc(userId);
-        res = cityRef.update({
+        const userRef = db.collection('Receiver').doc(userId);
+        res = userRef.update({
             token: request.body.token
         });
 
@@ -70,7 +70,7 @@ exports.sendMessage = functions.https.onRequest((request, response) => {
         // geting token data for reciver user
         const snapshot = await db.collection('Receiver').get();
         const recdocuments = snapshot.docs.map((doc) => doc.data());
-         
+
         
         const payload = {
             token: recdocuments[0].token, //FCMToken
