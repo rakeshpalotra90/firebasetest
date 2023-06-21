@@ -68,11 +68,12 @@ exports.sendMessage = functions.https.onRequest((request, response) => {
     if (res) {
 
         // geting token data for reciver user
-        const reciverdata = db.collection('Receiver');
-        const retDataTok =  reciverdata.where('to', '==', recipientId).get();   
+        const snapshot = await db.collection('Receiver').get();
+        const recdocuments = snapshot.docs.map((doc) => doc.data());
+         
         
         const payload = {
-            token: retDataTok.token, //FCMToken
+            token: recdocuments[0].token, //FCMToken
             notification: {
                 title: 'cloud function demo',
                 body: message
@@ -113,8 +114,6 @@ exports.receiveMessage =  functions.https.onRequest(async (request, response) =>
     const snapshot = await db.collection('Messages').get();
     const documents = snapshot.docs.map((doc) => doc.data());
 
-
-    //const reciverdata = db.collection('Messages').doc().where("to", "==", recipientId);
     response.status(200).send({'message':"Record found",'data':documents, 'error':''});
 
 
